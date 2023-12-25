@@ -15,8 +15,8 @@ int main(int argc, char **argv)
 	else {char *name = malloc(sizeof(*name) * 5);
 	strcpy(name, argv[4]);
 	}
-	int kierunek = argc > 5 ? atoi(argv[5]) : 1;
-      	wchar_t **mapka = mapa(m,n);
+	int kierunek = argc > 5 ? atoi(argv[5]) : 1; // 1^ 2> 3v 4<
+      	wchar_t **mapka = mapa(m,n,kierunek);
 	wypisywanie(mapka, m, n);	
 	
 	zwalnianie(mapka, m,n);

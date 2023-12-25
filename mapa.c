@@ -11,7 +11,7 @@ for(int i=0; i<2*m+1; i++){
 }
 wprintf(L"\n");}
 }
-wchar_t **mapa(int m, int n)
+wchar_t **mapa(int m, int n, int kierunek)
 {
     wchar_t **mapa = malloc(sizeof(*mapa) * (2*m + 1));
     for (int i = 0; i < 2*m +1; i++)
@@ -33,6 +33,9 @@ wchar_t **mapa(int m, int n)
    for(int i=1; i<2*m; i++)
 	   for(int j=1; j<2*n; j++)
 		   mapa[i][j]=L' ';
+ int srednian = n%2 == 0 ? n+1 :n;
+ int sredniam = m%2 ==0 ? m+1 : m;
+   mapa[sredniam][srednian] = kierunek == 1 ? L'^' : kierunek == 2 ? L'>': kierunek == 3 ? L'v': L'<'; 
     return mapa;
 }
 void zwalnianie(wchar_t **mapka, int m, int n)
