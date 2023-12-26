@@ -13,7 +13,7 @@ for(int i=0; i<2*m+1; i++){
 }
 wprintf(L"\n");}
 }
-wchar_t **mapa(int m, int n, int kierunek, double p)
+wchar_t **mapa(int m, int n, int kierunek, double p, int T[2])
 {
 	srand(time(NULL));
 	setlocale(LC_ALL, "C.UTF-8");
@@ -52,12 +52,10 @@ wchar_t **mapa(int m, int n, int kierunek, double p)
    iczarne++;
    }
    }
- int srednian = n%2 == 0 ? n+1 :n;
- int sredniam = m%2 ==0 ? m+1 : m;
- if(mapa[sredniam][srednian]==L' ')
-   mapa[sredniam][srednian] = kierunek == 1 ? L'△' : kierunek == 2 ? L'▷': kierunek == 3 ? L'▽': L'◁'; 
-  if(mapa[sredniam][srednian]==L'█')
-   mapa[sredniam][srednian] = kierunek == 1 ? L'▲' : kierunek == 2 ? L'▶': kierunek == 3 ? L'▼': L'◀';
+ if(mapa[T[0]][T[1]]==L' ')
+   mapa[T[0]][T[1]] = kierunek == 1 ? L'△' : kierunek == 2 ? L'▷': kierunek == 3 ? L'▽': L'◁'; 
+  if(mapa[T[0]][T[1]]==L'█')
+   mapa[T[0]][T[1]] = kierunek == 1 ? L'▲' : kierunek == 2 ? L'▶': kierunek == 3 ? L'▼': L'◀';
    
  return mapa;
 }
