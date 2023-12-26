@@ -11,9 +11,10 @@ int main(int argc, char **argv)
 	if (argc > 4)
 	{
 	char * name = malloc(sizeof(*name) * strlen(argv[4]) +1);
-	}
-	else {char *name = malloc(sizeof(*name) * 5);
 	strcpy(name, argv[4]);
+	}
+	else {char *name = malloc(sizeof(*name) * 6);
+	strcpy(name, "NAZWA");
 	}
 	int kierunek = argc > 5 ? atoi(argv[5]) : 1; // 1^ 2> 3v 4<
       	wchar_t **mapka = mapa(m,n,kierunek);

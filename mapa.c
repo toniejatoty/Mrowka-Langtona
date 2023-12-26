@@ -2,6 +2,7 @@
 #include <wchar.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <locale.h>
 void wypisywanie(wchar_t **mapa, int m, int n)
 {
 for(int i=0; i<2*m+1; i++){
@@ -13,6 +14,7 @@ wprintf(L"\n");}
 }
 wchar_t **mapa(int m, int n, int kierunek)
 {
+	setlocale(LC_ALL, "C.UTF-8");
     wchar_t **mapa = malloc(sizeof(*mapa) * (2*m + 1));
     for (int i = 0; i < 2*m +1; i++)
         mapa[i] = malloc(sizeof(**mapa) * (2*n + 1));
@@ -35,7 +37,7 @@ wchar_t **mapa(int m, int n, int kierunek)
 		   mapa[i][j]=L' ';
  int srednian = n%2 == 0 ? n+1 :n;
  int sredniam = m%2 ==0 ? m+1 : m;
-   mapa[sredniam][srednian] = kierunek == 1 ? L'^' : kierunek == 2 ? L'>': kierunek == 3 ? L'v': L'<'; 
+   mapa[sredniam][srednian] = kierunek == 1 ? L'△' : kierunek == 2 ? L'▷': kierunek == 3 ? L'▽': L'◁'; 
     return mapa;
 }
 void zwalnianie(wchar_t **mapka, int m, int n)
