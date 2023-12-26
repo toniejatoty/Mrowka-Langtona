@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <locale.h>
+#include <time.h>
 void wypisywanie(wchar_t **mapa, int m, int n)
 {
 for(int i=0; i<2*m+1; i++){
@@ -12,8 +13,9 @@ for(int i=0; i<2*m+1; i++){
 }
 wprintf(L"\n");}
 }
-wchar_t **mapa(int m, int n, int kierunek)
+wchar_t **mapa(int m, int n, int kierunek, double p)
 {
+	srand(time(NULL));
 	setlocale(LC_ALL, "C.UTF-8");
     wchar_t **mapa = malloc(sizeof(*mapa) * (2*m + 1));
     for (int i = 0; i < 2*m +1; i++)
@@ -35,10 +37,29 @@ wchar_t **mapa(int m, int n, int kierunek)
    for(int i=1; i<2*m; i++)
 	   for(int j=1; j<2*n; j++)
 		   mapa[i][j]=L' ';
+   int iczarne = 0;
+   int ileczarnych = n*m*p/100;
+   int mn;
+   int nm;
+   while(iczarne<ileczarnych)
+   {
+	mn=(rand() % ( m )) * 2 + 1;
+	nm=(rand() % ( n )) * 2 + 1;
+	if(mn%2 ==1 && nm %2 ==1)
+   if(mapa[mn][nm] == L' ')
+   {
+   mapa[mn][nm] = L'█';
+   iczarne++;
+   }
+   }
  int srednian = n%2 == 0 ? n+1 :n;
  int sredniam = m%2 ==0 ? m+1 : m;
+ if(mapa[sredniam][srednian]==L' ')
    mapa[sredniam][srednian] = kierunek == 1 ? L'△' : kierunek == 2 ? L'▷': kierunek == 3 ? L'▽': L'◁'; 
-    return mapa;
+  if(mapa[sredniam][srednian]==L'█')
+   mapa[sredniam][srednian] = kierunek == 1 ? L'▲' : kierunek == 2 ? L'▶': kierunek == 3 ? L'▼': L'◀';
+   
+ return mapa;
 }
 void zwalnianie(wchar_t **mapka, int m, int n)
 {
