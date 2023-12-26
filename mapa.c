@@ -13,7 +13,7 @@ for(int i=0; i<2*m+1; i++){
 }
 wprintf(L"\n");}
 }
-wchar_t **mapa(int m, int n, int kierunek, double p, int T[2])
+wchar_t **mapa(int m, int n, int kierunek, double p, int T[2], double pr)
 {
 	srand(time(NULL));
 	setlocale(LC_ALL, "C.UTF-8");
@@ -52,6 +52,19 @@ wchar_t **mapa(int m, int n, int kierunek, double p, int T[2])
    iczarne++;
    }
    }
+   int iprzeszkod =0;
+   int ileprzeszkod = (m-1)*(2*n-1) + (n-1)*(2*m-1) - ((m-1) * (n-1));
+   ileprzeszkod *= pr/100;
+  while(iprzeszkod< ileprzeszkod)
+  {
+  mn = rand()% (2*m -1) +1;
+  nm = rand() % (2*n -1) +1;
+  if(mn%2 == 1 && nm%2 ==1 ) ;
+  else if(mn%2 ==1 && nm%2 ==0){ if(mapa[mn][nm] == L' ') {mapa[mn][nm] = L'│';
+  iprzeszkod++;
+  }}
+  else if( mn%2 == 0) if(mapa[mn][nm] == L' '){mapa[mn][nm]=L'─'; iprzeszkod++;}
+  } 
  if(mapa[T[0]][T[1]]==L' ')
    mapa[T[0]][T[1]] = kierunek == 1 ? L'△' : kierunek == 2 ? L'▷': kierunek == 3 ? L'▽': L'◁'; 
   if(mapa[T[0]][T[1]]==L'█')

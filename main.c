@@ -6,12 +6,13 @@
 #include "serce.h"
 #include <locale.h>
 int main(int argc, char **argv)
-{//pierwszy argument ilosc wierszy drugi kolumn 3 ilosc interacji 4 nazwa pliku 5 poczatkowy kierunek mrowki 6 procentowe ile ma byc czarnych pol , 7 i 8 oznacza poczatkowa pozycje mrowki
+{//pierwszy argument ilosc wierszy drugi kolumn 3 ilosc interacji 4 nazwa pliku 5 poczatkowy kierunek mrowki 6 procentowe ile ma byc czarnych pol , 7 i 8 oznacza poczatkowa pozycje mrowki, 9 oznacza procentowo ile ma byc przeszkod
 	setlocale(LC_ALL, "C.UTF-8");	
 	int m = argc>1 ? atoi(argv[1]) : 10;
 	int n = argc>2 ? atoi(argv[2]) : 10;
 	int k = argc>3 ? atoi(argv[3]) : 5;
-	double p = argc>6 ? atoi(argv[6]) : 0;
+	double p = argc>6 ? atof(argv[6]) : 0;
+	double pr = argc > 9 ? atof(argv[9]): 0;
 	if(p>100) p = 100;
 	if (argc > 4)
 	{
@@ -29,7 +30,7 @@ int main(int argc, char **argv)
 	T[0] =argc > 7 && atoi(argv[7])%2 == 1? atoi(argv[7]) : m%2 ==0 ? m+1 : m;
 	 if(argc <= 7 || atoi(argv[7])%2 ==0) wprintf(L"Nie podano argumentu 7 albo podano zly bo musi byc liczba naturalnia nieparzysta, wiec ustawiono na srodek\n");
 
-	wchar_t **mapka = mapa(m,n,kierunek, p, T);
+	wchar_t **mapka = mapa(m,n,kierunek, p, T, pr);
 
 
 	wypisywanie(mapka, m, n);	
