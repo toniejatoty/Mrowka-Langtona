@@ -10,13 +10,17 @@ void wypisywanie(wchar_t **mapa, int m, int n, char * nazwa, int iteracja)
 	char filename[1024];
         sprintf(filename, "%s_%d", nazwa, iteracja);
         FILE * out = strcmp(nazwa, "_")==0 ? stdout : fopen(filename, "w");
-for(int i=0; i<2*m+1; i++){
+	if(out==NULL){
+	fwprintf(stderr, L"Jest jakis problem z plikime wysjacia");
+	exit(EXIT_FAILURE);
+	}
+	for(int i=0; i<2*m+1; i++){
 	for(int j=0; j< 2*n+1; j++)
 	{
 	fwprintf(out, L"%lc", mapa[i][j]);
 }
 fwprintf(out, L"\n");}
-//fclose(out);
+if(out != stdout)fclose(out);
 }
 wchar_t **mapa(int m, int n, int kierunek, double p, int T[2], double pr)
 {
