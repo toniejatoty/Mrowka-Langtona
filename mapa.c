@@ -29,51 +29,62 @@ if(out != stdout)fclose(out);
 }
 wchar_t **mapazpliku(FILE * in, int *m, int *n,int **T)
 {
+	int czyjestpolozenie=0;
 	int w=0;
 	int k=0;
 	int sizew=1;
 	int sizek=1;
+	int ktorainteracja = 0;
 	wchar_t a;
 	wchar_t ** mapa;
         mapa = malloc(sizeof(*mapa)*sizew);
-	//mapa[0] = malloc(sizeof(**mapa)* sizek);
 	if(mapa == NULL)
 	{
-	//fwprintf(stderr, L"Blad z alokacja pamieci");
 	return NULL;
 	}
 	mapa[0] = malloc(sizeof(**mapa)*sizek);
 while((a=fgetwc(in))!=WEOF)
-{
-	if(a==L'△' || a==L'▷' || a==L'▽'|| a==L'◁' || a==L'▲' || a== L'▶' || a==L'▼' || a==L'◀')
-	{
-	//wprintf(L"w-> %d k-> %d", w/2,k/2);
+{ ktorainteracja++;
+	if(a!=L'│' && a!=L'─' && a!=L'┌' && a!=L'┐' && a!=L'└' && a!=L'┘' && a!=L' ' && a!=L'█' && a!=L'△' && a!=L'▲' && a!=L'▷' && a!=L'▶' && a!=L'▽' && a!=L'▼' && a!=L'◁' && a!=L'◀'&& a!=L'\n'){
+		fwprintf(stderr,L"PODANO ZLY FORMAT MAPY W PLIKU Z MAPA: podano niedozwolony znak numer %d\n", ktorainteracja);
+		return NULL;
+	}
+	
+		if(a==L'△' || a==L'▷' || a==L'▽'|| a==L'◁' || a==L'▲' || a== L'▶' || a==L'▼' || a==L'◀')
+	{czyjestpolozenie++;
 	(*T)[0] = w;
 	(*T)[1] = k;
 	}
 	if(a == L'\n')
+	{ 
+
+		if(k!= sizek)
 	{
+                fwprintf(stderr,L"PODANO ZLY FORMAT MAPY W PLIKU Z MAPA: nie sa rowne kolumny\n");
+                return NULL;
+        }
+
 	w++;
 	k=0;
-	//sizek=1;
 	}
-	else if(sizek <=k)
+	else if(sizek<=k&&w==0)
 	{mapa = realokowaniek(mapa, sizew, sizek);
 		if(mapa == NULL) return NULL;
-	//	fwprintf(stderr, L"WYWALAM SIE W 46");
 		mapa[w][k] = a;
-	//	fwprintf(stderr, L"-->A JEDNAK NIE KLAMALEM\n");
 		k++;
 	sizek++;
 	}
+	else if(sizek<=k && w!=0)
+{
+                fwprintf(stderr,L"PODANO ZLY FORMAT MAPY W PLIKU Z MAPA: nie sa rowne kolumny\n");
+                return NULL;
+        }
+
 	else if(sizew<=w)
 	{
-//	fwprintf(stderr,L"REALOKUJE SOBIE w\n");
 	mapa =realokowaniew(mapa, sizew, sizek);
 	if(mapa == NULL)return NULL;
-//	fwprintf(stderr, L"Wywalam sie w 63");
 	mapa[w][k] = a;
-//	fwprintf(stderr, L"-->A nie jednak klamalem\n");
 	k++;
 	sizew++;	
 	}
@@ -83,10 +94,59 @@ while((a=fgetwc(in))!=WEOF)
 	k++;
 	}
 }
-//fwprintf(stderr, L"JESTEM W MAPA.c\n");
-//fwprintf(stderr, L"WARTOSC sizew --> sizek %d %d", sizew, sizek);
+////////////
+if(sizek%2 != 1){
+	fwprintf(stderr, L"PODANO ZLY FORMAT MAPY W PLIKU Z MAPA: jest blad bo o jedna kolumne za malo/duzo\n");
+	return NULL;
+}
+if(sizew%2 != 1){
+	fwprintf(stderr, L"PODANO ZLY FORMAT MAPY W PLIKU Z MAPA: jest blad bo o jeden wiersz za malo/duzo\n");
+	return NULL;
+}
+ if(mapa[0][0] != L'┌'|| mapa[0][sizek-1] != L'┐' ||mapa[sizew-1][0] != L'└' ||mapa[sizew-1][sizek-1]!=L'┘'){
+                fwprintf(stderr,L"PODANO ZLY FORMAT MAPY W PLIKU Z MAPA: jest blad w rogach mapy\n");
+                return NULL;
+        }
+
+   for(int i=1; i<(sizew/2)*2; i++)
+   { 
+	   for(int j=2; j<(sizek/2)*2; j+=2)
+                   if(mapa[i][j]!=L'│' && mapa[i][j]!=L' ')
+                   {
+          fwprintf(stderr,L"PODANO ZLY FORMAT MAPY W PLIKU Z MAPA: w miejscu gdzie powinna byc przeszkoda pionowa albo nic cos sie niedozwolonego znajduje\n");
+                return NULL;}
+
+	   if(mapa[i][0]!=L'│'|| mapa[i][(sizek/2)*2]!=L'│'){
+	   fwprintf(stderr,L"PODANO ZLY FORMAT MAPY W PLIKU Z MAPA: blad zwiazany z krawedzia pionowa mapy\n");
+                return NULL;}
+   }
+
+for(int i=1; i< (sizek/2)*2; i++)
+   {
+	   for(int j=2; j<(sizew/2)*2; j+=2)
+		   if(mapa[j][i]!=L'─' && mapa[j][i]!=L' ')
+		   {
+	  fwprintf(stderr,L"PODANO ZLY FORMAT MAPY W PLIKU Z MAPA: w miejscu gdzie znajduje sie przeszkoda albo nic zdnajduje sie cos niedozwolonego\n");
+                return NULL;}
+
+   if(mapa[0][i]!=L'─'||  mapa[(sizew/2)*2][i]!= L'─'){
+	   fwprintf(stderr,L"PODANO ZLY FORMAT MAPY W PLIKU Z MAPA: blad zwiazany z krawedziami poziomymi mapy\n");
+                return NULL;}
+   }
+for(int i=1; i<(sizew/2)*2; i+=2)
+	   for(int j=1; j<(sizek/2)*2; j+=2)
+		  if(mapa[i][j]!=L' ' && mapa[i][j]!=L'△' && mapa[i][j] !=L'▷' &&  mapa[i][j]!=L'▽'&&  mapa[i][j]!=L'◁' &&  mapa[i][j]!=L'▲' &&  mapa[i][j]!= L'▶' &&  mapa[i][j]!=L'▼' &&  mapa[i][j]!=L'◀' &&  mapa[i][j]!= L'█')
+{		   
+	fwprintf(stderr,L"PODANO ZLY FORMAT MAPY W PLIKU Z MAPA: w miejscu gdzie sa albo strzalki albo bialy kolor albo czarny znajduje sie cos niedozwolonego\n");
+                return NULL;
+        }
+if(czyjestpolozenie !=1){
+                fwprintf(stderr,L"PODANO ZLY FORMAT MAPY W PLIKU Z MAPA: podano za duzo strzalek ktore wskazuja na polozenie mrowki\n");
+                return NULL;
+        }
 (*m)=sizew/2;
 (*n)=sizek/2;
+
 return mapa;
 }
 wchar_t **realokowaniek(wchar_t ** mapa,int sizew, int k)
@@ -108,7 +168,6 @@ return mapka;
 }
 wchar_t **realokowaniew(wchar_t **mapa, int w,int k)
 {
-//	fwprintf(stderr, L"Wywalam sie w 96-->");
 	wchar_t ** mapka = realloc(mapa,sizeof(*mapka)*(w+1));
 	mapka[w] = malloc(sizeof(**mapka) * k);
 	if(mapka == NULL) {

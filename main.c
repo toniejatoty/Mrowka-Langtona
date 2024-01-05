@@ -44,6 +44,7 @@ int main(int argc, char **argv)
 	else{
 	mapka = mapa(m,n,kierunek, p, T, pr);
 	}
+	if (mapka == NULL) mapka = mapa(m,n,kierunek,p,T,pr);	
 	wypisywanie(mapka, m, n, nazwa, 0, 0);	
 
 	for(int i=0; i<k; i++)
@@ -63,5 +64,6 @@ int main(int argc, char **argv)
 	zwalnianie(mapka, m,n);
 	free(T);
 	free(nazwa);
+	fclose(input);
 	return 0;
 }
