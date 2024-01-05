@@ -22,6 +22,98 @@ void wypisywanie(wchar_t **mapa, int m, int n, char * nazwa, int iteracja)
 fwprintf(out, L"\n");}
 if(out != stdout)fclose(out);
 }
+wchar_t **mapazpliku(FILE * in, int *m, int *n,int **T)
+{
+	int w=0;
+	int k=0;
+	int sizew=1;
+	int sizek=1;
+	wchar_t a;
+	wchar_t ** mapa;
+        mapa = malloc(sizeof(*mapa)*sizew);
+	//mapa[0] = malloc(sizeof(**mapa)* sizek);
+	if(mapa == NULL)
+	{
+	//fwprintf(stderr, L"Blad z alokacja pamieci");
+	return NULL;
+	}
+	mapa[0] = malloc(sizeof(**mapa)*sizek);
+while((a=fgetwc(in))!=WEOF)
+{
+	if(a==L'△' || a==L'▷' || a==L'▽'|| a==L'◁' || a==L'▲' || a== L'▶' || a==L'▼' || a==L'◀')
+	{
+	//wprintf(L"w-> %d k-> %d", w/2,k/2);
+	(*T)[0] = w;
+	(*T)[1] = k;
+	}
+	if(a == L'\n')
+	{
+	w++;
+	k=0;
+	//sizek=1;
+	}
+	else if(sizek <=k)
+	{mapa = realokowaniek(mapa, sizew, sizek);
+		if(mapa == NULL) return NULL;
+	//	fwprintf(stderr, L"WYWALAM SIE W 46");
+		mapa[w][k] = a;
+	//	fwprintf(stderr, L"-->A JEDNAK NIE KLAMALEM\n");
+		k++;
+	sizek++;
+	}
+	else if(sizew<=w)
+	{
+//	fwprintf(stderr,L"REALOKUJE SOBIE w\n");
+	mapa =realokowaniew(mapa, sizew, sizek);
+	if(mapa == NULL)return NULL;
+//	fwprintf(stderr, L"Wywalam sie w 63");
+	mapa[w][k] = a;
+//	fwprintf(stderr, L"-->A nie jednak klamalem\n");
+	k++;
+	sizew++;	
+	}
+	else
+	{
+	mapa[w][k] = a;
+	k++;
+	}
+}
+//fwprintf(stderr, L"JESTEM W MAPA.c\n");
+//fwprintf(stderr, L"WARTOSC sizew --> sizek %d %d", sizew, sizek);
+(*m)=sizew/2;
+(*n)=sizek/2;
+return mapa;
+}
+wchar_t **realokowaniek(wchar_t ** mapa,int sizew, int k)
+{
+wchar_t **mapka = realloc(mapa, sizeof(**mapka)*sizew);
+if(mapka == NULL){fwprintf(stderr, L"JAKIS BLAD Z REALOKOWANIEM1"); 
+	for(int i=0; i<sizew; i++)free(mapa[i]);
+	free(mapa); 
+	return NULL;
+}
+mapka[sizew-1] = realloc(mapka[sizew-1], sizeof(**(mapka))*(k +1));
+	if(mapka[sizew-1] ==NULL){
+		fwprintf(stderr, L"JAKIS BLAD Z REALOKOWANIEM2");
+		for(int i=0; i<sizew; i++) free(mapa[i]);
+		free(mapa);
+		return NULL;}
+
+return mapka;
+}
+wchar_t **realokowaniew(wchar_t **mapa, int w,int k)
+{
+//	fwprintf(stderr, L"Wywalam sie w 96-->");
+	wchar_t ** mapka = realloc(mapa,sizeof(*mapka)*(w+1));
+	mapka[w] = malloc(sizeof(**mapka) * k);
+	if(mapka == NULL) {
+	fwprintf(stderr, L"JAKIS BLAD Z REALOKOWANIEM");
+	for(int i=0; i<w; i++)free(mapa[i]);
+	free(mapa);
+	return NULL;}
+
+return mapka;
+}
 wchar_t **mapa(int m, int n, int kierunek, double p, int T[2], double pr)
 {
 	srand(time(NULL));
