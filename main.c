@@ -44,7 +44,7 @@ int main(int argc, char **argv)
 	else{
 	mapka = mapa(m,n,kierunek, p, T, pr);
 	}
-	wypisywanie(mapka, m, n, nazwa, 0);	
+	wypisywanie(mapka, m, n, nazwa, 0, 0);	
 
 	for(int i=0; i<k; i++)
 	{
@@ -56,7 +56,9 @@ int main(int argc, char **argv)
 	else if(mapka[T[0]][T[1]] ==L'▶') T=czarny_prawo(mapka, m, n, T);	
 	else if(mapka[T[0]][T[1]] ==L'▼') T=czarny_dol(mapka, m, n, T);	
 	else if(mapka[T[0]][T[1]] ==L'◀') T=czarny_lewo(mapka, m, n, T);
-	wypisywanie(mapka, m, n, nazwa, i+1);
+	 
+	wypisywanie(mapka, m, n, nazwa, i+1,T[0]);
+	if(T[0]==-20) i=k;
 	}
 	zwalnianie(mapka, m,n);
 	free(T);

@@ -6,6 +6,11 @@
 #include "mapa.h"
 int *czarny_gora(wchar_t ** mapa, int m, int n, int *T)
 {
+if(T[1]-1 == 0)
+{
+T[0] = -20;
+return T;
+}
 if(mapa[T[0]][T[1]-1]==L'│'){
 mapa[T[0]][T[1]]=L'◀';
 return T;
@@ -16,7 +21,12 @@ T[1]-=2;
 return T;
 }
 int *czarny_prawo(wchar_t ** mapa, int m, int n, int *T)
+{if(T[0]-1 == 0)
 {
+T[0] = -20;
+return T;
+}
+
 if(mapa[T[0]-1][T[1]]==L'─'){
 mapa[T[0]][T[1]]=L'▲';
 return T;
@@ -29,6 +39,12 @@ return T;
 }
 int *czarny_dol(wchar_t ** mapa, int m, int n, int *T)
 {
+	if(T[1]+1 == n*2)
+{
+T[0] = -20;
+return T;
+}
+
 if(mapa[T[0]][T[1]+1]==L'│'){
 mapa[T[0]][T[1]]=L'▶';
 return T;
@@ -40,6 +56,12 @@ return T;
 }
 int *czarny_lewo(wchar_t ** mapa, int m, int n, int *T)
 {
+	if(T[0]+1 == 2*m)
+{
+T[0] = -20;
+return T;
+}
+
 if(mapa[T[0]+1][T[1]]==L'─'){
 mapa[T[0]][T[1]]=L'▼';
 return T;
@@ -51,6 +73,12 @@ return T;
 }
 int *bialy_gora(wchar_t ** mapa, int m, int n, int *T)
 {
+	if(T[1]+1 == 2*n)
+{
+T[0] = -20;
+return T;
+}
+
 if(mapa[T[0]][T[1]+1]==L'│'){
 mapa[T[0]][T[1]]=L'▷';
 return T;
@@ -62,7 +90,12 @@ return T;
 }
 
 int *bialy_prawo(wchar_t ** mapa, int m, int n, int *T)
+{if(T[0]+1 == 2*m)
 {
+T[0] = -20;
+return T;
+}
+
 if(mapa[T[0]+1][T[1]]==L'─'){
 mapa[T[0]][T[1]]=L'▽';
 return T;
@@ -74,7 +107,12 @@ return T;
 }
 
 int *bialy_dol(wchar_t ** mapa, int m, int n, int *T)
+{if(T[1]-1 == 0)
 {
+T[0] = -20;
+return T;
+}
+
 if(mapa[T[0]][T[1]-1]==L'│'){
 mapa[T[0]][T[1]]=L'◁';
 return T;
@@ -87,6 +125,12 @@ return T;
 
 int *bialy_lewo(wchar_t ** mapa, int m, int n, int *T)	
 {
+if(T[0]-1 == 0)
+{
+T[0] = -20;
+return T;
+}
+
 if(mapa[T[0]-1][T[1]]==L'─'){
 mapa[T[0]][T[1]]=L'△';
 return T;
