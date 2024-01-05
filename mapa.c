@@ -6,14 +6,16 @@
 #include <time.h>
 #include <string.h>
 void wypisywanie(wchar_t **mapa, int m, int n, char * nazwa, int iteracja, int t)
-{
+{	FILE * out = NULL;
+	if(nazwa == NULL) out = stdout;
+	else{
 	char filename[1024];
         sprintf(filename, "%s_%d", nazwa, iteracja);
-        FILE * out = strcmp(nazwa, "_")==0 ? stdout : fopen(filename, "w");
+        out = fopen(filename, "w");
 	if(out==NULL){
 	fwprintf(stderr, L"Jest jakis problem z plikime wysjacia");
 	exit(EXIT_FAILURE);
-	}
+	}}
 	if(t==-20)
 	{
 	fwprintf(out, L"BLAD MROWKA CHCE WYJSC POZA MAPE\n");
@@ -28,7 +30,10 @@ fwprintf(out, L"\n");}}
 if(out != stdout)fclose(out);
 }
 wchar_t **mapazpliku(FILE * in, int *m, int *n,int **T)
-{
+{	if(in == NULL){
+			 fwprintf(stderr, L"Cos nie moge otworzyc pliku z mapa\n");
+			 return NULL;
+			 }
 	int czyjestpolozenie=0;
 	int w=0;
 	int k=0;
